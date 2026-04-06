@@ -1,0 +1,43 @@
+FGT-SENATI-PIRAMIDE-ENTEL-ADM (suprateam) # sh full-configuration 
+config system admin
+    edit "suprateam"
+        set remote-auth disable
+        set peer-auth disable
+        set trusthost1 0.0.0.0 0.0.0.0
+        set trusthost2 0.0.0.0 0.0.0.0
+        set trusthost3 0.0.0.0 0.0.0.0
+        set trusthost4 0.0.0.0 0.0.0.0
+        set trusthost5 0.0.0.0 0.0.0.0
+        set trusthost6 0.0.0.0 0.0.0.0
+        set trusthost7 0.0.0.0 0.0.0.0
+        set trusthost8 0.0.0.0 0.0.0.0
+        set trusthost9 0.0.0.0 0.0.0.0
+        set trusthost10 0.0.0.0 0.0.0.0
+        set ip6-trusthost1 ::/0
+        set ip6-trusthost2 ::/0
+        set ip6-trusthost3 ::/0
+        set ip6-trusthost4 ::/0
+        set ip6-trusthost5 ::/0
+        set ip6-trusthost6 ::/0
+        set ip6-trusthost7 ::/0
+        set ip6-trusthost8 ::/0
+        set ip6-trusthost9 ::/0
+        set ip6-trusthost10 ::/0
+        set accprofile "super_admin"
+        set comments "Soporte supra"
+        set vdom "root"
+        unset ssh-public-key1
+        unset ssh-public-key2
+        unset ssh-public-key3
+        set ssh-certificate ''
+        set schedule ''
+        set force-password-change disable
+        set two-factor disable
+        set email-to ''
+        set sms-server fortiguard
+        set sms-phone ''
+        set guest-auth disable
+        set password ENC PB2+bBuy6JVncggCMTGLdGfe9WHYKiYnNmu2VdMvo8NINQPIuDe65DrloP/W5DTGf7quqNTrrIpA2bJWpfynd5zx/G0Y9YaahInqoXoHxnh7nE=
+        set allow-remove-admin-session enable
+    next
+end
