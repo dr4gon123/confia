@@ -51,15 +51,13 @@ def extract_page(page: Page) -> tuple[str, str, str | None]:
     immediately after page.goto().
     """
     page.wait_for_selector("h1", timeout=15_000)
-
-    h1 = page.query_selector("h1")
-    command_name = h1.inner_text().strip() if h1 else ""
+    command_name = page.inner_text("h1").strip()
 
     # First <p> that follows the h1 in document order
-    description = page.eval_on_selector_all(
+    description: str = str(page.eval_on_selector_all(
         "h1 ~ p",
         "els => els.length > 0 ? els[0].innerText.trim() : ''",
-    )
+    ))
 
     # First <table> in the page body (the parameter table)
     table_el = page.query_selector("table")
