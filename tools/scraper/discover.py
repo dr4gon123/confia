@@ -14,6 +14,11 @@ def discover_commands(page: Page, version: str) -> list[tuple[str, str, str]]:
     reads the left-nav in document order, and collects links under
     'CLI configuration commands' whose slugs start with 'config-'.
     The section is the most recent non-config- slug seen before each command.
+
+    NOTE: The caller must configure the page's browser context with a real
+    user-agent string. The site's WAF blocks requests that use the default
+    Playwright/Chromium headers and returns a block page instead of the docs.
+    Example: browser.new_context(user_agent="Mozilla/5.0 ...")
     """
     toc_url = f"{BASE_URL}/{version}/cli-reference/"
     page.goto(toc_url, wait_until="domcontentloaded", timeout=60_000)
