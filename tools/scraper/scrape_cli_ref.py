@@ -51,7 +51,7 @@ def scrape_version(
     for section, slug, url in commands:
         out = output_path(REPO_ROOT, version, section, slug)
 
-        if out.exists():
+        if out.exists() and out.stat().st_size > 200:
             print(f"  [{version}] SKIP {section}/{slug}")
             continue
 
@@ -70,8 +70,9 @@ def scrape_version(
             except Exception as exc:  # noqa: BLE001
                 if attempt == MAX_RETRIES - 1:
                     print(f"    ERROR after {MAX_RETRIES} attempts: {exc} — skipping")
+                    time.sleep(delay)
                 else:
-                    print(f"    Retry {attempt + 1}/{MAX_RETRIES - 1}...")
+                    print(f"    Retry {attempt + 1}/{MAX_RETRIES}...")
                     time.sleep(delay * 2)
 
 
@@ -91,11 +92,13 @@ def main() -> None:
 
     with sync_playwright() as p:
         browser = p.chromium.launch()
-        context = browser.new_context(user_agent=UA)
-        pg = context.new_page()
-        for version in versions:
-            scrape_version(pg, version, args.section, args.delay)
-        browser.close()
+        try:
+            context = browser.new_context(user_agent=UA)
+            pg = context.new_page()
+            for version in versions:
+                scrape_version(pg, version, args.section, args.delay)
+        finally:
+            browser.close()
 
     print("\nDone.")
 
