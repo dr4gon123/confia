@@ -61,6 +61,6 @@ def extract_page(page: Page) -> tuple[str, str, str | None]:
 
     # First <table> in the page body (the parameter table)
     table_el = page.query_selector("table")
-    table_html = table_el.outer_html() if table_el else None
+    table_html = table_el.evaluate("el => el.outerHTML") if table_el else None
 
     return command_name, description, table_html
