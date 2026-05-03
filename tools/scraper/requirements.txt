@@ -1,0 +1,4 @@
+playwright>=1.40
+pypandoc>=1.13
+pyyaml>=6.0
+pytest>=8.0
