@@ -3,6 +3,7 @@ from playwright.sync_api import Page
 BASE_URL = "https://docs.fortinet.com/document/fortigate"
 
 # Slugs that signal the end of the CLI configuration commands section in the TOC.
+# If Fortinet adds new top-level sections, add their slugs here.
 _SECTION_TERMINATORS = {"cli-diagnose-commands", "cli-execute-commands"}
 
 
@@ -53,8 +54,17 @@ def discover_commands(page: Page, version: str) -> list[tuple[str, str, str]]:
         if slug.startswith("config-"):
             if current_section is not None:
                 results.append((current_section, slug, href))
+            else:
+                print(f"  WARNING: config link {slug!r} seen before any section header — skipped", flush=True)
         else:
             # Section header e.g. "alertemail", "antivirus"
             current_section = slug
+            print(f"  Section: {slug}", flush=True)
+
+    if not results:
+        raise RuntimeError(
+            f"discover_commands: no config commands found for {version!r}. "
+            "Check the selector or TOC structure — Fortinet may have restructured the page."
+        )
 
     return results
