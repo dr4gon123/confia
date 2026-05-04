@@ -1,0 +1,92 @@
+# config dlp exact-data-match
+
+Configure exact-data-match template used by DLP scan.
+
+## Syntax
+
+```
+config dlp exact-data-match
+    Description: Configure exact-data-match template used by DLP scan.
+    edit <name>
+        config columns
+            Description: DLP exact-data-match column types.
+            edit <index>
+                set optional [enable|disable]
+                set type {string}
+            next
+        end
+        set data {string}
+        set fabric-force-sync [enable|disable]
+        set fabric-object [enable|disable]
+        set fabric-object-source [member|local|...]
+        set optional {integer}
+        set uuid {uuid}
+    next
+end
+```
+
+## Parameters
+
++----------------------+-----------------------------------+--------------------+--------------------+--------------------------------------+
+| Parameter            | Description                       | Type               | Size               | Default                              |
++======================+===================================+====================+====================+======================================+
+| data                 | External resource for exact data  | string             | Maximum length: 35 |                                      |
+|                      | match.                            |                    |                    |                                      |
++----------------------+-----------------------------------+--------------------+--------------------+--------------------------------------+
+| fabric-force-sync \* | Enable/disable forced             | option             | \-                 | disable                              |
+|                      | synchronization of configuration  |                    |                    |                                      |
+|                      | objects from the root FortiGate   |                    |                    |                                      |
+|                      | unit to the downstream devices.   |                    |                    |                                      |
+|                      | Configuration conflict check is   |                    |                    |                                      |
+|                      | skipped.                          |                    |                    |                                      |
++----------------------+-----------------------------------+--------------------+--------------------+--------------------------------------+
+|                      | +-------------+--------------------------------------------------------+                                           |
+|                      | | Option      | Description                                            |                                           |
+|                      | +=============+========================================================+                                           |
+|                      | | *enable*    | Enable forced synchronization of configuration objects |                                           |
+|                      | |             | from the root FortiGate unit to the downstream         |                                           |
+|                      | |             | devices.                                               |                                           |
+|                      | +-------------+--------------------------------------------------------+                                           |
+|                      | | *disable*   | Disable forced synchronization of configuration        |                                           |
+|                      | |             | objects from the root FortiGate unit to the downstream |                                           |
+|                      | |             | devices.                                               |                                           |
+|                      | +-------------+--------------------------------------------------------+                                           |
++----------------------+-----------------------------------+--------------------+--------------------+--------------------------------------+
+| fabric-object \*     | Security Fabric global object     | option             | \-                 | disable                              |
+|                      | setting.                          |                    |                    |                                      |
++----------------------+-----------------------------------+--------------------+--------------------+--------------------------------------+
+|                      | +-------------+--------------------------------------------------------+                                           |
+|                      | | Option      | Description                                            |                                           |
+|                      | +=============+========================================================+                                           |
+|                      | | *enable*    | Object is set as a security fabric-wide global object. |                                           |
+|                      | +-------------+--------------------------------------------------------+                                           |
+|                      | | *disable*   | Object is local to this security fabric member.        |                                           |
+|                      | +-------------+--------------------------------------------------------+                                           |
++----------------------+-----------------------------------+--------------------+--------------------+--------------------------------------+
+| fabric-object-source | Source of truth for fabric        | option             | \-                 | root                                 |
+| \*                   | object.                           |                    |                    |                                      |
++----------------------+-----------------------------------+--------------------+--------------------+--------------------------------------+
+|                      | +-------------+--------------------------------------------------------+                                           |
+|                      | | Option      | Description                                            |                                           |
+|                      | +=============+========================================================+                                           |
+|                      | | *member*    | Source of truth for this object is a non-root member   |                                           |
+|                      | |             | of fabric.                                             |                                           |
+|                      | +-------------+--------------------------------------------------------+                                           |
+|                      | | *local*     | Source of truth for this object is this security       |                                           |
+|                      | |             | fabric member.                                         |                                           |
+|                      | +-------------+--------------------------------------------------------+                                           |
+|                      | | *root*      | Source of truth for this object is the root of the     |                                           |
+|                      | |             | fabric.                                                |                                           |
+|                      | +-------------+--------------------------------------------------------+                                           |
++----------------------+-----------------------------------+--------------------+--------------------+--------------------------------------+
+| name                 | Name of table containing the      | string             | Maximum length: 35 |                                      |
+|                      | exact-data-match template.        |                    |                    |                                      |
++----------------------+-----------------------------------+--------------------+--------------------+--------------------------------------+
+| optional             | Number of optional columns need   | integer            | Minimum value: 0   | 0 \*\*                               |
+|                      | to match.                         |                    | Maximum value: 32  |                                      |
++----------------------+-----------------------------------+--------------------+--------------------+--------------------------------------+
+| uuid \*              | Universally Unique Identifier     | uuid               | Not Specified      | 00000000-0000-0000-0000-000000000000 |
+|                      | (UUID; automatically assigned but |                    |                    |                                      |
+|                      | can be manually reset).           |                    |                    |                                      |
++----------------------+-----------------------------------+--------------------+--------------------+--------------------------------------+
+

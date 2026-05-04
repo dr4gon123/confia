@@ -25,7 +25,7 @@ def test_output_path_major_derived_from_version(tmp_path):
 
 
 def test_build_markdown_with_table():
-    md = build_markdown("config alertemail setting", "Configure alert email.", "TABLE_CONTENT")
+    md = build_markdown("config alertemail setting", "Configure alert email.", None, "TABLE_CONTENT")
     assert "# config alertemail setting" in md
     assert "Configure alert email." in md
     assert "## Syntax" in md
@@ -35,7 +35,7 @@ def test_build_markdown_with_table():
 
 
 def test_build_markdown_without_table():
-    md = build_markdown("config alertemail setting", "Configure alert email.", None)
+    md = build_markdown("config alertemail setting", "Configure alert email.", None, None)
     assert "_No parameter table found._" in md
 
 

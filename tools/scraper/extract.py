@@ -8,9 +8,9 @@ def slug_to_filename(slug: str) -> str:
     return slug.replace("-", "_") + ".md"
 
 
-def output_path(repo_root: Path, version: str, section: str, slug: str) -> Path:
+def output_path(repo_root: Path, version: str, section: str, slug: str, output_dir: str = "config") -> Path:
     major = ".".join(version.split(".")[:2])
-    return repo_root / "config" / major / version / section / slug_to_filename(slug)
+    return repo_root / output_dir / major / version / section / slug_to_filename(slug)
 
 
 def table_to_pandoc(table_html: str) -> str:
@@ -22,7 +22,8 @@ def table_to_pandoc(table_html: str) -> str:
     )
 
 
-def build_markdown(command_name: str, description: str, pandoc_table: str | None) -> str:
+def build_markdown(command_name: str, description: str, syntax: str | None, pandoc_table: str | None) -> str:
+    fallback = f"{command_name}\n    set <parameter> <value>\nend"
     parts = [
         f"# {command_name}",
         "",
@@ -31,9 +32,7 @@ def build_markdown(command_name: str, description: str, pandoc_table: str | None
         "## Syntax",
         "",
         "```",
-        command_name,
-        "    set <parameter> <value>",
-        "end",
+        syntax or fallback,
         "```",
         "",
         "## Parameters",
@@ -43,12 +42,12 @@ def build_markdown(command_name: str, description: str, pandoc_table: str | None
     return "\n".join(parts) + "\n"
 
 
-def extract_page(page: Page) -> tuple[str, str, str | None]:
+def extract_page(page: Page) -> tuple[str, str, str | None, str | None]:
     """
-    Extract (command_name, description, table_html | None) from a rendered page.
+    Extract (command_name, description, syntax | None, table_html | None).
 
-    Waits for the <h1> to appear before reading content, so it is safe to call
-    immediately after page.goto().
+    syntax is the raw CLI syntax block from the page (e.g. "config alertemail setting\n    set ...\nend").
+    Waits for the <h1> before reading so it is safe to call right after page.goto().
     """
     page.wait_for_selector("h1", timeout=15_000)
     command_name = page.inner_text("h1").strip()
@@ -59,8 +58,15 @@ def extract_page(page: Page) -> tuple[str, str, str | None]:
         "els => els.length > 0 ? els[0].innerText.trim() : ''",
     ))
 
+    # Syntax block: first <pre> whose text starts with "config"
+    syntax: str = str(page.eval_on_selector_all(
+        "pre",
+        "els => { const s = els.find(e => e.innerText.trim().startsWith('config')); "
+        "return s ? s.innerText.trim() : ''; }",
+    ))
+
     # First <table> in the page body (the parameter table)
     table_el = page.query_selector("table")
     table_html = table_el.evaluate("el => el.outerHTML") if table_el else None
 
-    return command_name, description, table_html
+    return command_name, description, syntax or None, table_html

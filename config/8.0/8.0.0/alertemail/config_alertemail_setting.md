@@ -6,7 +6,42 @@ Configure alert email settings.
 
 ```
 config alertemail setting
-    set <parameter> <value>
+    Description: Configure alert email settings.
+    set FDS-license-expiring-warning [enable|disable]
+    set FDS-update-logs [enable|disable]
+    set FIPS-CC-errors [enable|disable]
+    set FSSO-disconnect-logs [enable|disable]
+    set HA-logs [enable|disable]
+    set IPS-logs [enable|disable]
+    set IPsec-errors-logs [enable|disable]
+    set PPP-errors-logs [enable|disable]
+    set admin-login-logs [enable|disable]
+    set alert-interval {integer}
+    set amc-interface-bypass-mode [enable|disable]
+    set antivirus-logs [enable|disable]
+    set configuration-changes-logs [enable|disable]
+    set critical-interval {integer}
+    set debug-interval {integer}
+    set email-interval {integer}
+    set emergency-interval {integer}
+    set error-interval {integer}
+    set filter-mode [category|threshold]
+    set firewall-authentication-failure-logs [enable|disable]
+    set fortiguard-log-quota-warning [enable|disable]
+    set information-interval {integer}
+    set local-disk-usage {integer}
+    set log-disk-usage-warning [enable|disable]
+    set mailto1 {string}
+    set mailto2 {string}
+    set mailto3 {string}
+    set notification-interval {integer}
+    set severity [emergency|alert|...]
+    set ssh-logs [enable|disable]
+    set sslvpn-authentication-errors-logs [enable|disable]
+    set username {string}
+    set violation-traffic-logs [enable|disable]
+    set warning-interval {integer}
+    set webfilter-logs [enable|disable]
 end
 ```
 

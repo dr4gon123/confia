@@ -54,12 +54,9 @@ def discover_commands(page: Page, version: str) -> list[tuple[str, str, str]]:
         if slug.startswith("config-"):
             if current_section is not None:
                 results.append((current_section, slug, href))
-            else:
-                print(f"  WARNING: config link {slug!r} seen before any section header — skipped", flush=True)
         else:
             # Section header e.g. "alertemail", "antivirus"
             current_section = slug
-            print(f"  Section: {slug}", flush=True)
 
     if not results:
         raise RuntimeError(

@@ -1,0 +1,522 @@
+# config webfilter profile
+
+Configure Web filter profiles.
+
+## Syntax
+
+```
+config webfilter profile
+    Description: Configure Web filter profiles.
+    edit <name>
+        config antiphish
+            Description: AntiPhishing profile.
+            set authentication [domain-controller|ldap]
+            set check-basic-auth [enable|disable]
+            set check-uri [enable|disable]
+            set check-username-only [enable|disable]
+            config custom-patterns
+                Description: Custom username and password regex patterns.
+                edit <pattern>
+                    set category [username|password]
+                    set type [regex|literal]
+                next
+            end
+            set default-action [exempt|log|...]
+            set domain-controller {string}
+            config inspection-entries
+                Description: AntiPhishing entries.
+                edit <name>
+                    set action [exempt|log|...]
+                    set fortiguard-category {user}
+                next
+            end
+            set ldap {string}
+            set max-body-len {integer}
+            set status [enable|disable]
+        end
+        set comment {var-string}
+        set extended-log [enable|disable]
+        set fabric-force-sync [enable|disable]
+        set fabric-object [enable|disable]
+        set fabric-object-source [member|local|...]
+        set feature-set [flow|proxy]
+        config ftgd-wf
+            Description: FortiGuard Web Filter settings.
+            set exempt-quota {user}
+            config filters
+                Description: FortiGuard filters.
+                edit <id>
+                    set action [block|authenticate|...]
+                    set auth-usr-grp <name1>, <name2>, ...
+                    set category {integer}
+                    set log [enable|disable]
+                    set override-replacemsg {string}
+                    set warn-duration {user}
+                    set warning-duration-type [session|timeout]
+                    set warning-prompt [per-domain|per-category]
+                next
+            end
+            set max-quota-timeout {integer}
+            set options {option1}, {option2}, ...
+            set ovrd {user}
+            config quota
+                Description: FortiGuard traffic quota settings.
+                edit <id>
+                    set category {user}
+                    set duration {user}
+                    set override-replacemsg {string}
+                    set type [time|traffic]
+                    set unit [B|KB|...]
+                    set value {integer}
+                next
+            end
+            set rate-crl-urls [disable|enable]
+            set rate-css-urls [disable|enable]
+            set rate-javascript-urls [disable|enable]
+            config risk
+                Description: FortiGuard risk level settings.
+                edit <id>
+                    set action [block|monitor]
+                    set log [enable|disable]
+                    set risk-level {string}
+                next
+            end
+        end
+        set https-replacemsg [enable|disable]
+        set log-all-url [enable|disable]
+        set options {option1}, {option2}, ...
+        config override
+            Description: Web Filter override settings.
+            set ovrd-cookie [allow|deny]
+            set ovrd-dur {user}
+            set ovrd-dur-mode [constant|ask]
+            set ovrd-scope [user|user-group|...]
+            set ovrd-user-group <name1>, <name2>, ...
+            set profile <name1>, <name2>, ...
+            set profile-attribute [User-Name|NAS-IP-Address|...]
+            set profile-type [list|radius]
+        end
+        set ovrd-perm {option1}, {option2}, ...
+        set post-action [normal|block]
+        set replacemsg-group {string}
+        set uuid {uuid}
+        config web
+            Description: Web content filtering settings.
+            set allowlist {option1}, {option2}, ...
+            set blocklist [enable|disable]
+            set bword-table {integer}
+            set bword-threshold {integer}
+            set content-header-list {integer}
+            set keyword-match <pattern1>, <pattern2>, ...
+            set log-search [enable|disable]
+            set safe-search {option1}, {option2}, ...
+            set urlfilter-table {integer}
+            set vimeo-restrict {string}
+            set youtube-restrict [none|strict|...]
+        end
+        set web-antiphishing-log [enable|disable]
+        set web-content-log [enable|disable]
+        set web-extended-all-action-log [enable|disable]
+        set web-filter-activex-log [enable|disable]
+        set web-filter-applet-log [enable|disable]
+        set web-filter-command-block-log [enable|disable]
+        set web-filter-cookie-log [enable|disable]
+        set web-filter-cookie-removal-log [enable|disable]
+        set web-filter-js-log [enable|disable]
+        set web-filter-jscript-log [enable|disable]
+        set web-filter-referer-log [enable|disable]
+        set web-filter-unknown-log [enable|disable]
+        set web-filter-vbs-log [enable|disable]
+        set web-flow-log-encoding [utf-8|punycode]
+        set web-ftgd-err-log [enable|disable]
+        set web-ftgd-quota-usage [enable|disable]
+        set web-invalid-domain-log [enable|disable]
+        set web-url-log [enable|disable]
+        set wisp [enable|disable]
+        set wisp-algorithm [primary-secondary|round-robin|...]
+        set wisp-servers <name1>, <name2>, ...
+    next
+end
+```
+
+## Parameters
+
++-------------------------------+-----------------------------------+-------------------------+-------------------------+--------------------------------------+
+| Parameter                     | Description                       | Type                    | Size                    | Default                              |
++===============================+===================================+=========================+=========================+======================================+
+| comment                       | Optional comments.                | var-string              | Maximum length: 255     |                                      |
++-------------------------------+-----------------------------------+-------------------------+-------------------------+--------------------------------------+
+| extended-log                  | Enable/disable extended logging   | option                  | \-                      | disable                              |
+|                               | for web filtering.                |                         |                         |                                      |
++-------------------------------+-----------------------------------+-------------------------+-------------------------+--------------------------------------+
+|                               | +-------------+--------------------------------------------------------+                                                     |
+|                               | | Option      | Description                                            |                                                     |
+|                               | +=============+========================================================+                                                     |
+|                               | | *enable*    | Enable setting.                                        |                                                     |
+|                               | +-------------+--------------------------------------------------------+                                                     |
+|                               | | *disable*   | Disable setting.                                       |                                                     |
+|                               | +-------------+--------------------------------------------------------+                                                     |
++-------------------------------+-----------------------------------+-------------------------+-------------------------+--------------------------------------+
+| fabric-force-sync \*          | Enable/disable forced             | option                  | \-                      | disable                              |
+|                               | synchronization of configuration  |                         |                         |                                      |
+|                               | objects from the root FortiGate   |                         |                         |                                      |
+|                               | unit to the downstream devices.   |                         |                         |                                      |
+|                               | Configuration conflict check is   |                         |                         |                                      |
+|                               | skipped.                          |                         |                         |                                      |
++-------------------------------+-----------------------------------+-------------------------+-------------------------+--------------------------------------+
+|                               | +-------------+--------------------------------------------------------+                                                     |
+|                               | | Option      | Description                                            |                                                     |
+|                               | +=============+========================================================+                                                     |
+|                               | | *enable*    | Enable forced synchronization of configuration objects |                                                     |
+|                               | |             | from the root FortiGate unit to the downstream         |                                                     |
+|                               | |             | devices.                                               |                                                     |
+|                               | +-------------+--------------------------------------------------------+                                                     |
+|                               | | *disable*   | Disable forced synchronization of configuration        |                                                     |
+|                               | |             | objects from the root FortiGate unit to the downstream |                                                     |
+|                               | |             | devices.                                               |                                                     |
+|                               | +-------------+--------------------------------------------------------+                                                     |
++-------------------------------+-----------------------------------+-------------------------+-------------------------+--------------------------------------+
+| fabric-object \*              | Security Fabric global object     | option                  | \-                      | disable                              |
+|                               | setting.                          |                         |                         |                                      |
++-------------------------------+-----------------------------------+-------------------------+-------------------------+--------------------------------------+
+|                               | +-------------+--------------------------------------------------------+                                                     |
+|                               | | Option      | Description                                            |                                                     |
+|                               | +=============+========================================================+                                                     |
+|                               | | *enable*    | Object is set as a security fabric-wide global object. |                                                     |
+|                               | +-------------+--------------------------------------------------------+                                                     |
+|                               | | *disable*   | Object is local to this security fabric member.        |                                                     |
+|                               | +-------------+--------------------------------------------------------+                                                     |
++-------------------------------+-----------------------------------+-------------------------+-------------------------+--------------------------------------+
+| fabric-object-source \*       | Source of truth for fabric        | option                  | \-                      | root                                 |
+|                               | object.                           |                         |                         |                                      |
++-------------------------------+-----------------------------------+-------------------------+-------------------------+--------------------------------------+
+|                               | +-------------+--------------------------------------------------------+                                                     |
+|                               | | Option      | Description                                            |                                                     |
+|                               | +=============+========================================================+                                                     |
+|                               | | *member*    | Source of truth for this object is a non-root member   |                                                     |
+|                               | |             | of fabric.                                             |                                                     |
+|                               | +-------------+--------------------------------------------------------+                                                     |
+|                               | | *local*     | Source of truth for this object is this security       |                                                     |
+|                               | |             | fabric member.                                         |                                                     |
+|                               | +-------------+--------------------------------------------------------+                                                     |
+|                               | | *root*      | Source of truth for this object is the root of the     |                                                     |
+|                               | |             | fabric.                                                |                                                     |
+|                               | +-------------+--------------------------------------------------------+                                                     |
++-------------------------------+-----------------------------------+-------------------------+-------------------------+--------------------------------------+
+| feature-set                   | Flow/proxy feature set.           | option                  | \-                      | flow                                 |
++-------------------------------+-----------------------------------+-------------------------+-------------------------+--------------------------------------+
+|                               | +-------------+--------------------------------------------------------+                                                     |
+|                               | | Option      | Description                                            |                                                     |
+|                               | +=============+========================================================+                                                     |
+|                               | | *flow*      | Flow feature set.                                      |                                                     |
+|                               | +-------------+--------------------------------------------------------+                                                     |
+|                               | | *proxy*     | Proxy feature set.                                     |                                                     |
+|                               | +-------------+--------------------------------------------------------+                                                     |
++-------------------------------+-----------------------------------+-------------------------+-------------------------+--------------------------------------+
+| https-replacemsg              | Enable replacement messages for   | option                  | \-                      | enable                               |
+|                               | HTTPS.                            |                         |                         |                                      |
++-------------------------------+-----------------------------------+-------------------------+-------------------------+--------------------------------------+
+|                               | +-------------+--------------------------------------------------------+                                                     |
+|                               | | Option      | Description                                            |                                                     |
+|                               | +=============+========================================================+                                                     |
+|                               | | *enable*    | Enable setting.                                        |                                                     |
+|                               | +-------------+--------------------------------------------------------+                                                     |
+|                               | | *disable*   | Disable setting.                                       |                                                     |
+|                               | +-------------+--------------------------------------------------------+                                                     |
++-------------------------------+-----------------------------------+-------------------------+-------------------------+--------------------------------------+
+| log-all-url                   | Enable/disable logging all URLs   | option                  | \-                      | disable                              |
+|                               | visited.                          |                         |                         |                                      |
++-------------------------------+-----------------------------------+-------------------------+-------------------------+--------------------------------------+
+|                               | +-------------+--------------------------------------------------------+                                                     |
+|                               | | Option      | Description                                            |                                                     |
+|                               | +=============+========================================================+                                                     |
+|                               | | *enable*    | Enable setting.                                        |                                                     |
+|                               | +-------------+--------------------------------------------------------+                                                     |
+|                               | | *disable*   | Disable setting.                                       |                                                     |
+|                               | +-------------+--------------------------------------------------------+                                                     |
++-------------------------------+-----------------------------------+-------------------------+-------------------------+--------------------------------------+
+| name                          | Profile name.                     | string                  | Maximum length: 47      |                                      |
++-------------------------------+-----------------------------------+-------------------------+-------------------------+--------------------------------------+
+| options                       | Options.                          | option                  | \-                      |                                      |
++-------------------------------+-----------------------------------+-------------------------+-------------------------+--------------------------------------+
+|                               | +---------------------+--------------------------------------------------------+                                             |
+|                               | | Option              | Description                                            |                                             |
+|                               | +=====================+========================================================+                                             |
+|                               | | *activexfilter*     | ActiveX filter.                                        |                                             |
+|                               | +---------------------+--------------------------------------------------------+                                             |
+|                               | | *cookiefilter*      | Cookie filter.                                         |                                             |
+|                               | +---------------------+--------------------------------------------------------+                                             |
+|                               | | *javafilter*        | Java applet filter.                                    |                                             |
+|                               | +---------------------+--------------------------------------------------------+                                             |
+|                               | | *block-invalid-url* | Block sessions contained an invalid domain name.       |                                             |
+|                               | +---------------------+--------------------------------------------------------+                                             |
+|                               | | *jscript*           | Javascript block.                                      |                                             |
+|                               | +---------------------+--------------------------------------------------------+                                             |
+|                               | | *js*                | JS block.                                              |                                             |
+|                               | +---------------------+--------------------------------------------------------+                                             |
+|                               | | *vbs*               | VB script block.                                       |                                             |
+|                               | +---------------------+--------------------------------------------------------+                                             |
+|                               | | *unknown*           | Unknown script block.                                  |                                             |
+|                               | +---------------------+--------------------------------------------------------+                                             |
+|                               | | *intrinsic*         | Intrinsic script block.                                |                                             |
+|                               | +---------------------+--------------------------------------------------------+                                             |
+|                               | | *wf-referer*        | Referring block.                                       |                                             |
+|                               | +---------------------+--------------------------------------------------------+                                             |
+|                               | | *wf-cookie*         | Cookie block.                                          |                                             |
+|                               | +---------------------+--------------------------------------------------------+                                             |
+|                               | | *per-user-bal*      | Per-user block/allow list filter                       |                                             |
+|                               | +---------------------+--------------------------------------------------------+                                             |
++-------------------------------+-----------------------------------+-------------------------+-------------------------+--------------------------------------+
+| ovrd-perm                     | Permitted override types.         | option                  | \-                      |                                      |
++-------------------------------+-----------------------------------+-------------------------+-------------------------+--------------------------------------+
+|                               | +------------------------------+--------------------------------------------------------+                                    |
+|                               | | Option                       | Description                                            |                                    |
+|                               | +==============================+========================================================+                                    |
+|                               | | *bannedword-override*        | Banned word override.                                  |                                    |
+|                               | +------------------------------+--------------------------------------------------------+                                    |
+|                               | | *urlfilter-override*         | URL filter override.                                   |                                    |
+|                               | +------------------------------+--------------------------------------------------------+                                    |
+|                               | | *fortiguard-wf-override*     | FortiGuard Web Filter override.                        |                                    |
+|                               | +------------------------------+--------------------------------------------------------+                                    |
+|                               | | *contenttype-check-override* | Content-type header override.                          |                                    |
+|                               | +------------------------------+--------------------------------------------------------+                                    |
++-------------------------------+-----------------------------------+-------------------------+-------------------------+--------------------------------------+
+| post-action                   | Action taken for HTTP POST        | option                  | \-                      | normal                               |
+|                               | traffic.                          |                         |                         |                                      |
++-------------------------------+-----------------------------------+-------------------------+-------------------------+--------------------------------------+
+|                               | +-------------+--------------------------------------------------------+                                                     |
+|                               | | Option      | Description                                            |                                                     |
+|                               | +=============+========================================================+                                                     |
+|                               | | *normal*    | Normal, POST requests are allowed.                     |                                                     |
+|                               | +-------------+--------------------------------------------------------+                                                     |
+|                               | | *block*     | POST requests are blocked.                             |                                                     |
+|                               | +-------------+--------------------------------------------------------+                                                     |
++-------------------------------+-----------------------------------+-------------------------+-------------------------+--------------------------------------+
+| replacemsg-group              | Replacement message group.        | string                  | Maximum length: 35      |                                      |
++-------------------------------+-----------------------------------+-------------------------+-------------------------+--------------------------------------+
+| uuid \*                       | Universally Unique Identifier     | uuid                    | Not Specified           | 00000000-0000-0000-0000-000000000000 |
+|                               | (UUID; automatically assigned but |                         |                         |                                      |
+|                               | can be manually reset).           |                         |                         |                                      |
++-------------------------------+-----------------------------------+-------------------------+-------------------------+--------------------------------------+
+| web-antiphishing-log          | Enable/disable logging of         | option                  | \-                      | enable                               |
+|                               | AntiPhishing checks.              |                         |                         |                                      |
++-------------------------------+-----------------------------------+-------------------------+-------------------------+--------------------------------------+
+|                               | +-------------+--------------------------------------------------------+                                                     |
+|                               | | Option      | Description                                            |                                                     |
+|                               | +=============+========================================================+                                                     |
+|                               | | *enable*    | Enable setting.                                        |                                                     |
+|                               | +-------------+--------------------------------------------------------+                                                     |
+|                               | | *disable*   | Disable setting.                                       |                                                     |
+|                               | +-------------+--------------------------------------------------------+                                                     |
++-------------------------------+-----------------------------------+-------------------------+-------------------------+--------------------------------------+
+| web-content-log               | Enable/disable logging logging    | option                  | \-                      | enable                               |
+|                               | blocked web content.              |                         |                         |                                      |
++-------------------------------+-----------------------------------+-------------------------+-------------------------+--------------------------------------+
+|                               | +-------------+--------------------------------------------------------+                                                     |
+|                               | | Option      | Description                                            |                                                     |
+|                               | +=============+========================================================+                                                     |
+|                               | | *enable*    | Enable setting.                                        |                                                     |
+|                               | +-------------+--------------------------------------------------------+                                                     |
+|                               | | *disable*   | Disable setting.                                       |                                                     |
+|                               | +-------------+--------------------------------------------------------+                                                     |
++-------------------------------+-----------------------------------+-------------------------+-------------------------+--------------------------------------+
+| web-extended-all-action-log   | Enable/disable extended any       | option                  | \-                      | disable                              |
+|                               | filter action logging for web     |                         |                         |                                      |
+|                               | filtering.                        |                         |                         |                                      |
++-------------------------------+-----------------------------------+-------------------------+-------------------------+--------------------------------------+
+|                               | +-------------+--------------------------------------------------------+                                                     |
+|                               | | Option      | Description                                            |                                                     |
+|                               | +=============+========================================================+                                                     |
+|                               | | *enable*    | Enable setting.                                        |                                                     |
+|                               | +-------------+--------------------------------------------------------+                                                     |
+|                               | | *disable*   | Disable setting.                                       |                                                     |
+|                               | +-------------+--------------------------------------------------------+                                                     |
++-------------------------------+-----------------------------------+-------------------------+-------------------------+--------------------------------------+
+| web-filter-activex-log        | Enable/disable logging ActiveX.   | option                  | \-                      | enable                               |
++-------------------------------+-----------------------------------+-------------------------+-------------------------+--------------------------------------+
+|                               | +-------------+--------------------------------------------------------+                                                     |
+|                               | | Option      | Description                                            |                                                     |
+|                               | +=============+========================================================+                                                     |
+|                               | | *enable*    | Enable setting.                                        |                                                     |
+|                               | +-------------+--------------------------------------------------------+                                                     |
+|                               | | *disable*   | Disable setting.                                       |                                                     |
+|                               | +-------------+--------------------------------------------------------+                                                     |
++-------------------------------+-----------------------------------+-------------------------+-------------------------+--------------------------------------+
+| web-filter-applet-log         | Enable/disable logging Java       | option                  | \-                      | enable                               |
+|                               | applets.                          |                         |                         |                                      |
++-------------------------------+-----------------------------------+-------------------------+-------------------------+--------------------------------------+
+|                               | +-------------+--------------------------------------------------------+                                                     |
+|                               | | Option      | Description                                            |                                                     |
+|                               | +=============+========================================================+                                                     |
+|                               | | *enable*    | Enable setting.                                        |                                                     |
+|                               | +-------------+--------------------------------------------------------+                                                     |
+|                               | | *disable*   | Disable setting.                                       |                                                     |
+|                               | +-------------+--------------------------------------------------------+                                                     |
++-------------------------------+-----------------------------------+-------------------------+-------------------------+--------------------------------------+
+| web-filter-command-block-log  | Enable/disable logging blocked    | option                  | \-                      | enable                               |
+|                               | commands.                         |                         |                         |                                      |
++-------------------------------+-----------------------------------+-------------------------+-------------------------+--------------------------------------+
+|                               | +-------------+--------------------------------------------------------+                                                     |
+|                               | | Option      | Description                                            |                                                     |
+|                               | +=============+========================================================+                                                     |
+|                               | | *enable*    | Enable setting.                                        |                                                     |
+|                               | +-------------+--------------------------------------------------------+                                                     |
+|                               | | *disable*   | Disable setting.                                       |                                                     |
+|                               | +-------------+--------------------------------------------------------+                                                     |
++-------------------------------+-----------------------------------+-------------------------+-------------------------+--------------------------------------+
+| web-filter-cookie-log         | Enable/disable logging cookie     | option                  | \-                      | enable                               |
+|                               | filtering.                        |                         |                         |                                      |
++-------------------------------+-----------------------------------+-------------------------+-------------------------+--------------------------------------+
+|                               | +-------------+--------------------------------------------------------+                                                     |
+|                               | | Option      | Description                                            |                                                     |
+|                               | +=============+========================================================+                                                     |
+|                               | | *enable*    | Enable setting.                                        |                                                     |
+|                               | +-------------+--------------------------------------------------------+                                                     |
+|                               | | *disable*   | Disable setting.                                       |                                                     |
+|                               | +-------------+--------------------------------------------------------+                                                     |
++-------------------------------+-----------------------------------+-------------------------+-------------------------+--------------------------------------+
+| web-filter-cookie-removal-log | Enable/disable logging blocked    | option                  | \-                      | enable                               |
+|                               | cookies.                          |                         |                         |                                      |
++-------------------------------+-----------------------------------+-------------------------+-------------------------+--------------------------------------+
+|                               | +-------------+--------------------------------------------------------+                                                     |
+|                               | | Option      | Description                                            |                                                     |
+|                               | +=============+========================================================+                                                     |
+|                               | | *enable*    | Enable setting.                                        |                                                     |
+|                               | +-------------+--------------------------------------------------------+                                                     |
+|                               | | *disable*   | Disable setting.                                       |                                                     |
+|                               | +-------------+--------------------------------------------------------+                                                     |
++-------------------------------+-----------------------------------+-------------------------+-------------------------+--------------------------------------+
+| web-filter-js-log             | Enable/disable logging Java       | option                  | \-                      | enable                               |
+|                               | scripts.                          |                         |                         |                                      |
++-------------------------------+-----------------------------------+-------------------------+-------------------------+--------------------------------------+
+|                               | +-------------+--------------------------------------------------------+                                                     |
+|                               | | Option      | Description                                            |                                                     |
+|                               | +=============+========================================================+                                                     |
+|                               | | *enable*    | Enable setting.                                        |                                                     |
+|                               | +-------------+--------------------------------------------------------+                                                     |
+|                               | | *disable*   | Disable setting.                                       |                                                     |
+|                               | +-------------+--------------------------------------------------------+                                                     |
++-------------------------------+-----------------------------------+-------------------------+-------------------------+--------------------------------------+
+| web-filter-jscript-log        | Enable/disable logging JScripts.  | option                  | \-                      | enable                               |
++-------------------------------+-----------------------------------+-------------------------+-------------------------+--------------------------------------+
+|                               | +-------------+--------------------------------------------------------+                                                     |
+|                               | | Option      | Description                                            |                                                     |
+|                               | +=============+========================================================+                                                     |
+|                               | | *enable*    | Enable setting.                                        |                                                     |
+|                               | +-------------+--------------------------------------------------------+                                                     |
+|                               | | *disable*   | Disable setting.                                       |                                                     |
+|                               | +-------------+--------------------------------------------------------+                                                     |
++-------------------------------+-----------------------------------+-------------------------+-------------------------+--------------------------------------+
+| web-filter-referer-log        | Enable/disable logging referrers. | option                  | \-                      | enable                               |
++-------------------------------+-----------------------------------+-------------------------+-------------------------+--------------------------------------+
+|                               | +-------------+--------------------------------------------------------+                                                     |
+|                               | | Option      | Description                                            |                                                     |
+|                               | +=============+========================================================+                                                     |
+|                               | | *enable*    | Enable setting.                                        |                                                     |
+|                               | +-------------+--------------------------------------------------------+                                                     |
+|                               | | *disable*   | Disable setting.                                       |                                                     |
+|                               | +-------------+--------------------------------------------------------+                                                     |
++-------------------------------+-----------------------------------+-------------------------+-------------------------+--------------------------------------+
+| web-filter-unknown-log        | Enable/disable logging unknown    | option                  | \-                      | enable                               |
+|                               | scripts.                          |                         |                         |                                      |
++-------------------------------+-----------------------------------+-------------------------+-------------------------+--------------------------------------+
+|                               | +-------------+--------------------------------------------------------+                                                     |
+|                               | | Option      | Description                                            |                                                     |
+|                               | +=============+========================================================+                                                     |
+|                               | | *enable*    | Enable setting.                                        |                                                     |
+|                               | +-------------+--------------------------------------------------------+                                                     |
+|                               | | *disable*   | Disable setting.                                       |                                                     |
+|                               | +-------------+--------------------------------------------------------+                                                     |
++-------------------------------+-----------------------------------+-------------------------+-------------------------+--------------------------------------+
+| web-filter-vbs-log            | Enable/disable logging VBS        | option                  | \-                      | enable                               |
+|                               | scripts.                          |                         |                         |                                      |
++-------------------------------+-----------------------------------+-------------------------+-------------------------+--------------------------------------+
+|                               | +-------------+--------------------------------------------------------+                                                     |
+|                               | | Option      | Description                                            |                                                     |
+|                               | +=============+========================================================+                                                     |
+|                               | | *enable*    | Enable setting.                                        |                                                     |
+|                               | +-------------+--------------------------------------------------------+                                                     |
+|                               | | *disable*   | Disable setting.                                       |                                                     |
+|                               | +-------------+--------------------------------------------------------+                                                     |
++-------------------------------+-----------------------------------+-------------------------+-------------------------+--------------------------------------+
+| web-flow-log-encoding         | Log encoding in flow mode.        | option                  | \-                      | utf-8                                |
++-------------------------------+-----------------------------------+-------------------------+-------------------------+--------------------------------------+
+|                               | +-------------+--------------------------------------------------------+                                                     |
+|                               | | Option      | Description                                            |                                                     |
+|                               | +=============+========================================================+                                                     |
+|                               | | *utf-8*     | UTF-8 encoding.                                        |                                                     |
+|                               | +-------------+--------------------------------------------------------+                                                     |
+|                               | | *punycode*  | Punycode encoding.                                     |                                                     |
+|                               | +-------------+--------------------------------------------------------+                                                     |
++-------------------------------+-----------------------------------+-------------------------+-------------------------+--------------------------------------+
+| web-ftgd-err-log              | Enable/disable logging rating     | option                  | \-                      | enable                               |
+|                               | errors.                           |                         |                         |                                      |
++-------------------------------+-----------------------------------+-------------------------+-------------------------+--------------------------------------+
+|                               | +-------------+--------------------------------------------------------+                                                     |
+|                               | | Option      | Description                                            |                                                     |
+|                               | +=============+========================================================+                                                     |
+|                               | | *enable*    | Enable setting.                                        |                                                     |
+|                               | +-------------+--------------------------------------------------------+                                                     |
+|                               | | *disable*   | Disable setting.                                       |                                                     |
+|                               | +-------------+--------------------------------------------------------+                                                     |
++-------------------------------+-----------------------------------+-------------------------+-------------------------+--------------------------------------+
+| web-ftgd-quota-usage          | Enable/disable logging daily      | option                  | \-                      | enable                               |
+|                               | quota usage.                      |                         |                         |                                      |
++-------------------------------+-----------------------------------+-------------------------+-------------------------+--------------------------------------+
+|                               | +-------------+--------------------------------------------------------+                                                     |
+|                               | | Option      | Description                                            |                                                     |
+|                               | +=============+========================================================+                                                     |
+|                               | | *enable*    | Enable setting.                                        |                                                     |
+|                               | +-------------+--------------------------------------------------------+                                                     |
+|                               | | *disable*   | Disable setting.                                       |                                                     |
+|                               | +-------------+--------------------------------------------------------+                                                     |
++-------------------------------+-----------------------------------+-------------------------+-------------------------+--------------------------------------+
+| web-invalid-domain-log        | Enable/disable logging invalid    | option                  | \-                      | enable                               |
+|                               | domain names.                     |                         |                         |                                      |
++-------------------------------+-----------------------------------+-------------------------+-------------------------+--------------------------------------+
+|                               | +-------------+--------------------------------------------------------+                                                     |
+|                               | | Option      | Description                                            |                                                     |
+|                               | +=============+========================================================+                                                     |
+|                               | | *enable*    | Enable setting.                                        |                                                     |
+|                               | +-------------+--------------------------------------------------------+                                                     |
+|                               | | *disable*   | Disable setting.                                       |                                                     |
+|                               | +-------------+--------------------------------------------------------+                                                     |
++-------------------------------+-----------------------------------+-------------------------+-------------------------+--------------------------------------+
+| web-url-log                   | Enable/disable logging URL        | option                  | \-                      | enable                               |
+|                               | filtering.                        |                         |                         |                                      |
++-------------------------------+-----------------------------------+-------------------------+-------------------------+--------------------------------------+
+|                               | +-------------+--------------------------------------------------------+                                                     |
+|                               | | Option      | Description                                            |                                                     |
+|                               | +=============+========================================================+                                                     |
+|                               | | *enable*    | Enable setting.                                        |                                                     |
+|                               | +-------------+--------------------------------------------------------+                                                     |
+|                               | | *disable*   | Disable setting.                                       |                                                     |
+|                               | +-------------+--------------------------------------------------------+                                                     |
++-------------------------------+-----------------------------------+-------------------------+-------------------------+--------------------------------------+
+| wisp                          | Enable/disable web proxy WISP.    | option                  | \-                      | disable                              |
++-------------------------------+-----------------------------------+-------------------------+-------------------------+--------------------------------------+
+|                               | +-------------+--------------------------------------------------------+                                                     |
+|                               | | Option      | Description                                            |                                                     |
+|                               | +=============+========================================================+                                                     |
+|                               | | *enable*    | Enable web proxy WISP.                                 |                                                     |
+|                               | +-------------+--------------------------------------------------------+                                                     |
+|                               | | *disable*   | Disable web proxy WISP.                                |                                                     |
+|                               | +-------------+--------------------------------------------------------+                                                     |
++-------------------------------+-----------------------------------+-------------------------+-------------------------+--------------------------------------+
+| wisp-algorithm                | WISP server selection algorithm.  | option                  | \-                      | auto-learning                        |
++-------------------------------+-----------------------------------+-------------------------+-------------------------+--------------------------------------+
+|                               | +---------------------+--------------------------------------------------------+                                             |
+|                               | | Option              | Description                                            |                                             |
+|                               | +=====================+========================================================+                                             |
+|                               | | *primary-secondary* | Select the first healthy server in order.              |                                             |
+|                               | +---------------------+--------------------------------------------------------+                                             |
+|                               | | *round-robin*       | Select the next healthy server.                        |                                             |
+|                               | +---------------------+--------------------------------------------------------+                                             |
+|                               | | *auto-learning*     | Select the lightest loading healthy server.            |                                             |
+|                               | +---------------------+--------------------------------------------------------+                                             |
++-------------------------------+-----------------------------------+-------------------------+-------------------------+--------------------------------------+
+| wisp-servers `<name>`         | WISP servers.                     | string                  | Maximum length: 79      |                                      |
+|                               |                                   |                         |                         |                                      |
+|                               | Server name.                      |                         |                         |                                      |
++-------------------------------+-----------------------------------+-------------------------+-------------------------+--------------------------------------+
+
